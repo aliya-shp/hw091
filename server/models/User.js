@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const nanoid = require("nanoid");
+const {nanoid} = require("nanoid");
 
 const SALT_WORK_FACTOR = 10;
 
