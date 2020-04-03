@@ -10,7 +10,8 @@ class ChatRoom extends Component {
         usernames: [],
     };
 
-    setChat = () => {
+
+    componentDidMount() {
         this.websocket = new WebSocket('ws://localhost:8000/chat?token=' + this.props.user.token);
         this.websocket.onmessage = event => {
             const parsed = JSON.parse(event.data);
@@ -50,10 +51,6 @@ class ChatRoom extends Component {
                     }
                 }, 1000)
         }
-    };
-
-    componentDidMount() {
-        this.setChat();
     }
 
     sendMessage = () => {
@@ -85,12 +82,12 @@ class ChatRoom extends Component {
             <div>
                 {this.state.messages.map((message, i) => (
                     <div key={i}>
-                        <b>{message.username || 'Anonymous'}</b>:
+                        <b>{message.username}</b>:
                         <span>{message.text}</span>
                     </div>
                 ))}
                 <div>
-                    <input type="text" onChange={this.inputChangeHandler} name="messageText" value={this.state.text}/>
+                    <input type="text" onChange={this.inputChangeHandler} name="text" value={this.state.text}/>
                     <input type="button" value="send" onClick={this.sendMessage}/>
                 </div>
             </div>
