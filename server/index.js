@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const expressWs = require('express-ws');
 const {nanoid} = require('nanoid');
 
