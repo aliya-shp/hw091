@@ -10,7 +10,6 @@ class ChatRoom extends Component {
         usernames: [],
     };
 
-
     componentDidMount() {
         this.websocket = new WebSocket('ws://localhost:8000/chat?token=' + this.props.user.token);
         this.websocket.onmessage = event => {
@@ -24,7 +23,10 @@ class ChatRoom extends Component {
 
             if (parsed.type === 'NEW_MESSAGE') {
                 this.setState({
-                    ...this.state, text: parsed.text, username: parsed.username
+                    messages: this.state.messages.concat({
+                        username: parsed.username,
+                        text: parsed.text,
+                    })
                 })
             }
 
