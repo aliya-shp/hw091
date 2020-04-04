@@ -24,7 +24,7 @@ class ChatRoom extends Component {
 
             if (parsed.type === 'NEW_MESSAGE') {
                 this.setState({
-                    messages: [...this.state.messages, parsed.text],
+                    ...this.state, text: parsed.text, username: parsed.username
                 })
             }
 
@@ -60,6 +60,7 @@ class ChatRoom extends Component {
         });
 
         this.websocket.send(message);
+        this.setState({ text: '' });
     };
 
     inputChangeHandler = event => {
