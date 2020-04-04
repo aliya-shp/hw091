@@ -18,19 +18,19 @@ class ChatRoom extends Component {
 
             if (parsed.type === 'LAST_MESSAGES') {
                 this.setState({
-                    messages: parsed.messages
+                    messages: parsed.messages,
                 })
             }
 
             if (parsed.type === 'NEW_MESSAGE') {
                 this.setState({
-                    messages: [...this.state.messages, parsed.message]
+                    messages: [...this.state.messages, parsed.text],
                 })
             }
 
             if (parsed.type === 'ONLINE_USERS') {
                 this.setState({
-                    usernames: parsed.usernames
+                    usernames: parsed.usernames,
                 })
             }
 
@@ -64,44 +64,31 @@ class ChatRoom extends Component {
 
     inputChangeHandler = event => {
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.value,
         })
     };
 
     render() {
-
-        let users = (
-            <div>
-                {this.state.usernames && this.state.usernames.map(user => (
-                    <li key={user}>{user}</li>
-                ))}
-            </div>
-        );
-
-        let chat = (
-            <div>
-                {this.state.messages.map((message, i) => (
-                    <div key={i}>
-                        <b>{message.username}</b>:
-                        <span>{message.text}</span>
-                    </div>
-                ))}
-                <div>
-                    <input type="text" onChange={this.inputChangeHandler} name="text" value={this.state.text}/>
-                    <input type="button" value="send" onClick={this.sendMessage}/>
-                </div>
-            </div>
-        );
-
         return (
             <div>
                 <Row>
                     <Col sm={3}>
                         <h5>Online users</h5>
-                        {users}
+                        {this.state.usernames && this.state.usernames.map(user => (
+                            <li key={user}>{user}</li>
+                        ))}
                     </Col>
                     <Col sm={9} className="Chat">
-                        {chat}
+                        {this.state.messages.map((message, i) => (
+                            <div key={i}>
+                                <b>{message.username}</b>:
+                                <span>{message.text}</span>
+                            </div>
+                        ))}
+                    </Col>
+                    <Col sm={{offset: 3, size: 9}}>
+                        <input type="text" onChange={this.inputChangeHandler} name="text" value={this.state.text}/>
+                        <input type="button" value="Send message" onClick={this.sendMessage}/>
                     </Col>
                 </Row>
             </div>
@@ -111,7 +98,7 @@ class ChatRoom extends Component {
 
 
 const mapStateToProps = state => ({
-    user: state.users.user
+    user: state.users.user,
 });
 
 export default connect(mapStateToProps)(ChatRoom);

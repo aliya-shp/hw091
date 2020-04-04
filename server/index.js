@@ -6,7 +6,6 @@ const {nanoid} = require('nanoid');
 
 const config = require('./config');
 const users = require('./app/users');
-const messages = require('./app/messages');
 const User = require('./models/User');
 const Message = require('./models/Message');
 
@@ -22,7 +21,6 @@ const run = async () => {
     await mongoose.connect(config.database, config.databaseOptions);
     
     app.use('/users', users);
-    app.use('/messages', messages);
 
     const connections = {};
 
@@ -41,7 +39,7 @@ const run = async () => {
 
         console.log('client connected with id - ' + id);
 
-        connections[id] = ws;
+        connections[id] = {ws, user};
 
         console.log('total clients connected ' + Object.keys(connections).length);
 
@@ -70,7 +68,7 @@ const run = async () => {
             switch (parsed.type) {
                 case 'ADD_MESSAGE':
                     Object.keys(connections).forEach(connId => {
-                        const connection = connections[connId];
+                        const connection = connections[connId].ws;
                         const newMessage = {
                             username,
                             text: parsed.text,
