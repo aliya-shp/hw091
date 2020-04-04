@@ -48,7 +48,7 @@ export const loginUser = userData => {
             dispatch(loginUserRequest());
             const response = await axiosApi.post('/users/sessions', userData);
             dispatch(loginUserSuccess(response.data));
-            dispatch(push('/'));
+            dispatch(push('/chat'));
         } catch (error) {
             dispatch(loginUserFailure(error.response.data));
         }
